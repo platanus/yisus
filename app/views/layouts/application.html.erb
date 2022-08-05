@@ -10,14 +10,21 @@
 
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag "application" %>
-  
+
     <%= stylesheet_pack_tag 'application' %>
   </head>
 
   <body>
     <div id="vue-app">
-      <app></app>
-      <%= yield %>
+      <% if current_user %>
+        <app>
+          <div class="container p-4 mx-auto mb-24 sm:px-36 sm:py-8 ">
+            <%= yield %>
+          </div>
+        </app>
+      <% else %>
+        <%= yield %>
+      <% end %>
     </div>
   </body>
 </html>
