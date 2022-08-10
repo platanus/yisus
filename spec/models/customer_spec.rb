@@ -15,5 +15,7 @@ RSpec.describe Customer, type: :model do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:harvest_id) }
     it { is_expected.to validate_presence_of(:bsale_id) }
+    it { is_expected.to validate_uniqueness_of(:harvest_id) }
+    it { is_expected.to validate_uniqueness_of(:bsale_id) }
   end
 end

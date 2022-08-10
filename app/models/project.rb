@@ -1,7 +1,9 @@
 class Project < ApplicationRecord
   belongs_to :customer
+  has_many :time_reports
 
   validates :name, :harvest_id, :unit_price, presence: true
+  validates :harvest_id, uniqueness: true
 end
 
 # == Schema Information
@@ -19,6 +21,7 @@ end
 # Indexes
 #
 #  index_projects_on_customer_id  (customer_id)
+#  index_projects_on_harvest_id   (harvest_id) UNIQUE
 #
 # Foreign Keys
 #
