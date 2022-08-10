@@ -7,6 +7,7 @@ RSpec.describe Project, type: :model do
 
   describe 'associations' do
     it { is_expected.to belong_to(:customer) }
+    it { is_expected.to have_many(:time_reports)}
   end
 
   describe 'validations' do
@@ -15,5 +16,6 @@ RSpec.describe Project, type: :model do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:harvest_id) }
     it { is_expected.to validate_presence_of(:unit_price) }
+    it { is_expected.to validate_uniqueness_of(:harvest_id) }
   end
 end
