@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_05_183618) do
+ActiveRecord::Schema.define(version: 2022_08_10_201647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,9 +47,21 @@ ActiveRecord::Schema.define(version: 2022_08_05_183618) do
     t.integer "bsale_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["bsale_id"], name: "index_customers_on_bsale_id", unique: true
+    t.index ["harvest_id"], name: "index_customers_on_harvest_id", unique: true
   end
 
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.integer "bsale_id", null: false
+    t.string "url", null: false
+    t.bigint "time_report_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bsale_id"], name: "index_documents_on_bsale_id", unique: true
+    t.index ["time_report_id"], name: "index_documents_on_time_report_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -60,6 +72,17 @@ ActiveRecord::Schema.define(version: 2022_08_05_183618) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["customer_id"], name: "index_projects_on_customer_id"
+    t.index ["harvest_id"], name: "index_projects_on_harvest_id", unique: true
+  end
+
+  create_table "time_reports", force: :cascade do |t|
+    t.date "from", null: false
+    t.date "to", null: false
+    t.float "billable_hours", null: false
+    t.bigint "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_time_reports_on_project_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -74,5 +97,7 @@ ActiveRecord::Schema.define(version: 2022_08_05_183618) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "documents", "time_reports"
   add_foreign_key "projects", "customers"
+  add_foreign_key "time_reports", "projects"
 end
