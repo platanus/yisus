@@ -121,6 +121,7 @@ GEM
     childprocess (4.1.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
+    connection_pool (2.2.5)
     crass (1.0.6)
     data_migrate (8.0.0)
       activerecord (>= 5.0)
@@ -216,6 +217,10 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -232,6 +237,8 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.16.2)
     msgpack (1.5.4)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
     nenv (0.3.0)
     nio4r (2.5.8)
     nokogiri (1.13.8)
@@ -273,6 +280,8 @@ GEM
     rack (2.2.4)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
+    rack-protection (2.2.0)
+      rack
     rack-proxy (0.7.2)
       rack
     rack-test (2.0.2)
@@ -316,6 +325,9 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    recipient_interceptor (0.3.1)
+      mail
+    redis (4.6.0)
     regexp_parser (2.5.0)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -379,6 +391,7 @@ GEM
       rubocop (~> 1.31)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    ruby_http_client (3.5.4)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -398,6 +411,13 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
+    send_grid_mailer (1.2.1)
+      letter_opener (~> 1.7.0)
+      rails (>= 4.2.0)
+      sendgrid-ruby (~> 4.0, >= 4.0.4)
+    sendgrid-ruby (4.3.3)
+      ruby_http_client (~> 3.0)
+      sinatra (>= 1.4.7, < 3)
     sentry-raven (3.1.2)
       faraday (>= 1.0)
     shakapacker (6.2.1)
@@ -408,6 +428,10 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
+    sidekiq (6.4.1)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     simple_token_authentication (1.17.0)
       actionmailer (>= 3.2.6, < 7)
       actionpack (>= 3.2.6, < 7)
@@ -421,6 +445,11 @@ GEM
     simplecov_linter_formatter (0.2.0)
       rainbow
     simplecov_text_formatter (0.1.0)
+    sinatra (2.2.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.2.0)
+      tilt (~> 2.0)
     spring (4.0.0)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -497,6 +526,7 @@ DEPENDENCIES
   rack-timeout
   rails (~> 6.1.6, >= 6.1.6.1)
   rails-i18n
+  recipient_interceptor
   rspec-nc
   rspec-rails
   rspec_junit_formatter (~> 0.4)
@@ -508,9 +538,11 @@ DEPENDENCIES
   rubocop-rspec (~> 2.2)
   sass-rails (>= 6)
   scout_apm
+  send_grid_mailer (~> 1.2.1)
   sentry-raven
   shakapacker (~> 6.2.0)
   shoulda-matchers
+  sidekiq
   simplecov
   simplecov_linter_formatter (~> 0.2)
   simplecov_text_formatter

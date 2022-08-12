@@ -5,14 +5,15 @@ Bundler.require(*Rails.groups)
 
 module Yisus
   class Application < Rails::Application
+    config.active_job.queue_adapter = :sidekiq
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
         resource '/public/*', headers: :any, methods: :get
         resource '/api/*',
-          headers: :any,
-          expose: ['X-Page', 'X-PageTotal'],
-          methods: [:get, :post, :patch, :put, :delete, :options]
+                 headers: :any,
+                 expose: ['X-Page', 'X-PageTotal'],
+                 methods: [:get, :post, :patch, :put, :delete, :options]
       end
     end
 

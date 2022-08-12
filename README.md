@@ -82,6 +82,10 @@ If you need to generate data with **development purposes**, you can customize th
 
 ## Internal dependencies
 
+### Queue System
+
+For managing tasks in the background, this project uses [Sidekiq](https://github.com/mperham/sidekiq)
+
 ### Authorization
 
 For defining which parts of the system each user has access to, we have chosen to include the [Pundit](https://github.com/elabs/pundit) gem, by [Elabs](http://elabs.se/).
@@ -187,4 +191,16 @@ For even faster in-place component refreshing (with no page reloads), you can en
     development:
       dev_server:
         hmr: true
+
+
+## Sending Emails
+
+The emails can be send through the gem `send_grid_mailer` using the `sendgrid` delivery method.
+All the `action_mailer` configuration can be found at `config/mailer.rb`, which is loaded only on production environments.
+
+All emails should be sent using background jobs, by default we install `sidekiq` for that purpuse.
+
+#### Testing in staging
+
+If you add the `EMAIL_RECIPIENTS=` environmental variable, the emails will be intercepted and redirected to the email in the variable.
 
