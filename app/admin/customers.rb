@@ -18,4 +18,13 @@ ActiveAdmin.register Customer do
       row :created_at
     end
   end
+
+  form do |f|
+    f.inputs do
+      f.input :name
+      f.input :harvest_id
+      f.input :bsale_id
+    end
+    f.actions
+  end
 end
