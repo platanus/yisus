@@ -1,5 +1,6 @@
 class TimeReport < ApplicationRecord
   belongs_to :project
+  has_one :document, dependent: :nullify
 
   validates :from, :to, :billable_hours, presence: true
 end

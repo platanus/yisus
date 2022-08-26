@@ -7,6 +7,7 @@ RSpec.describe TimeReport, type: :model do
 
   describe 'associations' do
     it { is_expected.to belong_to(:project) }
+    it { is_expected.to have_one(:document) }
   end
 
   describe 'validations' do
