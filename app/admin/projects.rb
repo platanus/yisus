@@ -18,4 +18,14 @@ ActiveAdmin.register Project do
       row :customer
     end
   end
+
+  form do |f|
+    f.inputs do
+      f.input :name
+      f.input :harvest_id
+      f.input :unit_price
+      f.input :customer
+    end
+    f.actions
+  end
 end
