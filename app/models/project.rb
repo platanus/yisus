@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   belongs_to :customer
-  has_many :time_reports
+  has_many :time_reports, dependent: :destroy
 
   validates :name, :harvest_id, :unit_price, presence: true
   validates :harvest_id, uniqueness: true

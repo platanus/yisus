@@ -6,7 +6,7 @@ ActiveAdmin.register Project do
     column :name
     column :harvest_id
     column :unit_price
-    column :customer_id
+    column :customer
     actions
   end
 
@@ -15,7 +15,7 @@ ActiveAdmin.register Project do
       row :name
       row :harvest_id
       row :unit_price
-      row :customer_id
+      row :customer
     end
   end
 end
