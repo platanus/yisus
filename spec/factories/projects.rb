@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :project do
     name { "MyString" }
-    harvest_id { Time.current.to_i }
+    sequence(:harvest_id) { |n| n }
     unit_price { 1.5 }
     customer
   end

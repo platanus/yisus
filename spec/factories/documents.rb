@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :document do
-    bsale_id { Time.current.to_i }
+    sequence(:bsale_id) { |n| n }
     url { "MyString" }
     time_report
   end

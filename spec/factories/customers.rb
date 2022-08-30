@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :customer do
     name { 'MyName' }
-    harvest_id { Time.current.to_i }
-    bsale_id { Time.current.to_i + 1 }
+    sequence(:harvest_id) { |n| n }
+    sequence(:bsale_id) { |n| n }
   end
 end
