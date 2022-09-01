@@ -6,11 +6,14 @@ class CreateDocumentJob < ApplicationJob
   def perform(time_report_id)
     time_report = TimeReport.find(time_report_id)
     document_data = document_data(time_report)
-    document = client.post_document(document_data)
+    response = client.post_document(document_data)
+    raise 'Bsale API error' unless response.success?
+
+    document = response.body
     Document.create!(
       time_report_id: time_report_id,
-      bsale_id: document['id'],
-      url: document['urlPdfOriginal']
+      bsale_id: document[:id],
+      url: document[:urlPdfOriginal]
     )
   end
 
