@@ -16,5 +16,6 @@ RSpec.describe TimeReport, type: :model do
     it { is_expected.to validate_presence_of(:from) }
     it { is_expected.to validate_presence_of(:to) }
     it { is_expected.to validate_presence_of(:billable_hours) }
+    it { is_expected.to validate_numericality_of(:billable_hours).is_greater_than_or_equal_to(0) }
   end
 end

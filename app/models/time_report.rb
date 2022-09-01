@@ -1,8 +1,9 @@
 class TimeReport < ApplicationRecord
   belongs_to :project
-  has_one :document, dependent: :nullify
+  has_one :document, dependent: :destroy
 
   validates :from, :to, :billable_hours, presence: true
+  validates :billable_hours, numericality: { greater_than_or_equal_to: 0 }
 end
 
 # == Schema Information
