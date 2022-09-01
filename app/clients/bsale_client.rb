@@ -4,6 +4,7 @@ class BsaleClient
 
   def post_document(body)
     post_request('/documents', body)
+
   end
 
   private
@@ -17,6 +18,7 @@ class BsaleClient
 
   def post_request(path, body)
     full_url = [BASE_URL, path, '.json'].join
-    HTTParty.post(full_url, headers: headers, body: body)
+    response = HTTParty.post(full_url, headers: headers, body: body)
+    ClientResponse.new(response)
   end
 end
