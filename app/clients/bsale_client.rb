@@ -1,10 +1,9 @@
 class BsaleClient
-  BASE_URL = 'https://api.bsale.cl/v1'
+  BASE_URL = 'https://api.bsale.cl/v1/'
   BSALE_TOKEN = ENV.fetch('BSALE_TOKEN')
 
   def post_document(body)
-    post_request('/documents', body)
-
+    post_request('documents', body)
   end
 
   private
