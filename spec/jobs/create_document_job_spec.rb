@@ -53,15 +53,7 @@ RSpec.describe CreateDocumentJob, type: :job do
     context 'when time report is found' do
       let(:time_report_id) { time_report.id }
 
-      context 'when bsale client response is a success' do
-        it { expect { perform }.to change { Document.count }.by(1) }
-      end
-
-      context 'when bsale client response is not a success' do
-        let(:post_document) { instance_double(ClientResponse, success?: false, body: {}) }
-
-        it { expect { perform }.to raise_error('Bsale API error') }
-      end
+      it { expect { perform }.to change { Document.count }.by(1) }
     end
 
     context 'when time report is not found' do

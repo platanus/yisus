@@ -24,7 +24,6 @@ class CreateDocumentJob < ApplicationJob
 
   def get_uf_value
     response = cmf_client.get_uf(Date.current)
-    raise "CMF API error: #{response.body}" unless response.success?
 
     response.body['UFs'][0]['Valor'].gsub(/[.,]/, '.' => '', ',' => '.').to_f
   end
@@ -52,8 +51,6 @@ class CreateDocumentJob < ApplicationJob
 
   def post_bsale_document
     response = bsale_client.post_document(document_data)
-    raise "Bsale API error: #{response.body}" unless response.success?
-
     response.body
   end
 end

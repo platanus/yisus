@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe FetchHarvestTimeReportsJob, type: :job do
   describe '#perform_now' do
-    let(:date) { Date.new(2022, 1, 1) }
+    let(:date_range) { { from: Date.new(2022, 1, 1), to: Date.new(2022, 1, 31) } }
     let(:harvest_time_reports) do
       [
         {
@@ -27,7 +27,7 @@ RSpec.describe FetchHarvestTimeReportsJob, type: :job do
     end
 
     def perform
-      described_class.perform_now(date)
+      described_class.perform_now(date_range)
     end
 
     before { allow(HarvestClient).to receive(:new).and_return(harvest_client) }
@@ -39,8 +39,7 @@ RSpec.describe FetchHarvestTimeReportsJob, type: :job do
 
     it 'calls #get_time_reports method of harvest client' do
       perform
-      expect(harvest_client).to have_received(:get_time_reports)
-        .with(date.beginning_of_month, date.end_of_month)
+      expect(harvest_client).to have_received(:get_time_reports).with(date_range)
     end
 
     context 'when harvest client response is a success' do
@@ -61,10 +60,12 @@ RSpec.describe FetchHarvestTimeReportsJob, type: :job do
 
       context 'when there are time reports for the given month' do
         before do
-          create(:time_report,
-                 project: customer1.projects.first,
-                 from: date.beginning_of_month,
-                 to: date.end_of_month)
+          create(
+            :time_report,
+            project: customer1.projects.first,
+            from: date_range[:from],
+            to: date_range[:to]
+          )
         end
 
         it { expect { perform }.to change { TimeReport.count }.by(1) }

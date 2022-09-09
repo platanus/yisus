@@ -3,11 +3,8 @@ class FetchHarvestTimeReportsJob < ApplicationJob
 
   DEFAULT_UNIT_PRICE = 1.8
 
-  def perform(date)
-    beginning_of_month, end_of_month = month_dates(date)
-    response = client.get_time_reports(beginning_of_month, end_of_month)
-    raise 'Harvest API error' unless response.success?
-
+  def perform(date_range)
+    response = client.get_time_reports(date_range)
     harvest_time_reports = response.body[:results]
     ActiveRecord::Base.transaction do
       harvest_time_reports.each do |report|
@@ -15,19 +12,17 @@ class FetchHarvestTimeReportsJob < ApplicationJob
         next unless customer
 
         project = upsert_project(customer, report[:project_name], report[:project_id])
-        upsert_time_report(project, beginning_of_month, end_of_month, report[:billable_hours])
+        upsert_time_report(project, date_range[:from], date_range[:to], report[:billable_hours])
       end
     end
+
+    TimeReport.where(date_range)
   end
 
   private
 
   def client
     @client ||= HarvestClient.new
-  end
-
-  def month_dates(date)
-    [date.beginning_of_month, date.end_of_month]
   end
 
   def upsert_project(customer, name, harvest_id)
