@@ -23,6 +23,7 @@
     "compression-webpack-plugin": "9",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.0.0",
+    "date-fns": "^2.29.2",
     "eslint-plugin-tailwindcss": "^3.6.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "humps": "^2.0.1",
