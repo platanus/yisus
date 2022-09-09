@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   namespace :api, defaults: { format: :json } do
     namespace :internal do
+      resources :time_reports, only: [:index, :create]
       resources :documents, only: [:create]
     end
   end
