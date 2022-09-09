@@ -48,6 +48,7 @@ commands:
           command: |
             BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
             gem install bundler:$BUNDLER_VERSION
+            bundle config set --local path $(echo $BUNDLE_PATH)
             bundle _$(echo $BUNDLER_VERSION)_ install
 
       - run:
