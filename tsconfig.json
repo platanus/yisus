@@ -12,20 +12,18 @@
     "importsNotUsedAsValues": "error",
     "target": "esnext",
     "allowJs": true,
-
-    // Recommended
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    // See <https://github.com/vuejs/vue-cli/pull/5688>
     "skipLibCheck": true,
     "baseUrl": "app/javascript/",
-    "types": ["@types/jest", "@types/node"],
+    "types": ["@types/node", "@types/jest"]
   },
   "include": [
     "app/javascript/**/*.ts",
     "app/javascript/**/*.vue"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.spec.ts"
   ]
 }
