@@ -23,6 +23,11 @@ class BaseClient
     url = build_uri(path, options[:suffix])
     options = { headers: headers, query: options[:query], body: options[:body] }
     response = HTTParty.send(method, url, options)
+
+    Rails.logger.info(
+      "#{self.class.name} request to url=#{url} "\
+      "answered with status=#{response.code} and body=#{response.body}"
+    )
     raise StandardError, "#{self.class}: #{response}" unless response.success?
 
     ClientResponse.new(response)
