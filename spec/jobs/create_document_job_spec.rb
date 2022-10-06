@@ -37,7 +37,7 @@ RSpec.describe CreateDocumentJob, type: :job do
 
     it 'calls get_uf method of cmf client' do
       perform
-      expect(cmf_client).to have_received(:get_uf).with(Date.current)
+      expect(cmf_client).to have_received(:get_uf).with(time_report.to)
     end
 
     it 'creates bsale client' do

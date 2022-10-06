@@ -23,7 +23,8 @@ class CreateDocumentJob < ApplicationJob
   end
 
   def get_uf_value
-    response = cmf_client.get_uf(Date.current)
+    last_day_date = @time_report.to
+    response = cmf_client.get_uf(last_day_date)
 
     response.body['UFs'][0]['Valor'].gsub(/[.,]/, '.' => '', ',' => '.').to_f
   end
