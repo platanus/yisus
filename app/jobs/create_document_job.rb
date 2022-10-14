@@ -31,10 +31,10 @@ class CreateDocumentJob < ApplicationJob
 
   def document_data
     {
-      codeSii: 33,
+      codeSii: 34,
       officeId: 1,
       emissionDate: Time.zone.now.to_i,
-      expirationDate: (Time.zone.now + 30.days).to_i,
+      expirationDate: Time.zone.now.to_i,
       declareSii: 1,
       clientId: @time_report.project.customer.bsale_id,
       details: document_details
@@ -43,11 +43,20 @@ class CreateDocumentJob < ApplicationJob
 
   def document_details
     [{
-      netUnitValue: @time_report.project.unit_price * get_uf_value,
+      netUnitValue: document_detail_net_unit_value,
       quantity: @time_report.billable_hours,
-      comment: I18n.l(@time_report.from, format: "%B %Y").capitalize,
-      taxId: [1]
+      comment: document_detail_comment
     }]
+  end
+
+  def document_detail_net_unit_value
+    (@time_report.project.unit_price * get_uf_value).round
+  end
+
+  def document_detail_comment
+    project_name = @time_report.project.name
+    month = I18n.l(@time_report.from, format: '%B %Y').capitalize
+    "Desarrollo proyecto #{project_name} - #{month}"
   end
 
   def post_bsale_document
