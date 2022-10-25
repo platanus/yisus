@@ -43,32 +43,34 @@ RSpec.describe FetchHarvestTimeReportsJob, type: :job do
     end
 
     context 'when harvest client response is a success' do
-      let!(:customer1) do
-        create(:customer, harvest_id: 1) do |customer|
-          create(:project, customer: customer, harvest_id: 1)
-        end
-      end
-      let!(:customer2) do
-        create(:customer, harvest_id: 2) do |customer|
-          create(:project, customer: customer, harvest_id: 2)
-        end
-      end
+      let(:customer1) { create(:customer, harvest_id: 1) }
+      let!(:project1) { create(:project, customer: customer1, harvest_id: 1) }
+      let(:customer2) { create(:customer, harvest_id: 2) }
+      let!(:project2) { create(:project, customer: customer2, harvest_id: 2) }
 
-      context 'when there are no time reports for the given month' do
+      context 'when there are no saved time reports for the given month' do
         it { expect { perform }.to change { TimeReport.count }.by(2) }
       end
 
-      context 'when there are time reports for the given month' do
-        before do
+      context 'when there are saved time reports for the given month' do
+        let!(:time_report1) do
           create(
             :time_report,
-            project: customer1.projects.first,
+            project: project1,
             from: date_range[:from],
-            to: date_range[:to]
+            to: date_range[:to],
+            billable_hours: 5.0
           )
         end
 
-        it { expect { perform }.to change { TimeReport.count }.by(1) }
+        it 'updates billable hours of existing time reports' do
+          perform
+          expect(time_report1.reload.billable_hours).to eq(10.0)
+        end
+
+        it 'creates new time reports for projects that do not have them' do
+          expect { perform }.to change { TimeReport.count }.by(1)
+        end
       end
 
       context 'when time report params are invalid' do
@@ -138,6 +140,23 @@ RSpec.describe FetchHarvestTimeReportsJob, type: :job do
                               .and change { Project.count }.by(0)
                               .and change { TimeReport.count }.by(0)
           end
+        end
+      end
+
+      context 'when project does exist' do
+        let(:harvest_time_reports) do
+          [
+            {
+              project_id: 1,
+              project_name: 'Project 1',
+              client_id: 1,
+              billable_hours: 10
+            }
+          ]
+        end
+
+        it 'does not create project' do
+          expect { perform }.not_to(change { Project.count })
         end
       end
     end

@@ -26,20 +26,22 @@ class FetchHarvestTimeReportsJob < ApplicationJob
   end
 
   def upsert_project(customer, name, harvest_id)
-    Project.create_with(unit_price: DEFAULT_UNIT_PRICE)
-           .find_or_create_by!(harvest_id: harvest_id) do |project|
-      project.name = name
-      project.customer = customer
-    end
+    project = Project.find_or_initialize_by(harvest_id: harvest_id)
+    project.name = name
+    project.customer = customer
+    project.unit_price = DEFAULT_UNIT_PRICE
+    project.save!
+    project
   end
 
   def upsert_time_report(project, beginning_of_month, end_of_month, billable_hours)
-    TimeReport.find_or_create_by!(
+    time_report = TimeReport.find_or_initialize_by(
       project: project,
       from: beginning_of_month,
       to: end_of_month
-    ) do |time_report|
-      time_report.billable_hours = billable_hours
-    end
+    )
+    time_report.billable_hours = billable_hours
+    time_report.save!
+    time_report
   end
 end
