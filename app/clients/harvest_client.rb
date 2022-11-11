@@ -3,6 +3,10 @@ class HarvestClient < BaseClient
   HARVEST_ACCOUNT_ID = ENV.fetch('HARVEST_ACCOUNT_ID')
   HARVEST_TOKEN = ENV.fetch('HARVEST_TOKEN')
 
+  def get_projects
+    get('/projects', query: { is_active: true })
+  end
+
   def get_time_reports(date_range)
     get('reports/time/projects', query: date_range)
   end
