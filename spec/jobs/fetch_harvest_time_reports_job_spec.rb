@@ -103,51 +103,14 @@ RSpec.describe FetchHarvestTimeReportsJob, type: :job do
           ]
         end
 
-        it { expect { perform }.to change { TimeReport.count }.by(0) }
+        it { expect { perform }.not_to(change { TimeReport.count }) }
       end
 
       context 'when project does not exist' do
-        context 'when project params are valid' do
-          let(:harvest_time_reports) do
-            [
-              {
-                project_id: 3,
-                project_name: 'Project 3',
-                client_id: 1,
-                billable_hours: 10
-              }
-            ]
-          end
-
-          it { expect { perform }.to change { Project.count }.by(1) }
-          it { expect { perform }.to change { TimeReport.count }.by(1) }
-        end
-
-        context 'when project params are invalid' do
-          let(:harvest_time_reports) do
-            [
-              {
-                project_id: nil,
-                project_name: nil,
-                client_id: 1,
-                billable_hours: 10
-              }
-            ]
-          end
-
-          it 'does not create projects and time reports' do
-            expect { perform }.to raise_error(ActiveRecord::RecordInvalid)
-                              .and change { Project.count }.by(0)
-                              .and change { TimeReport.count }.by(0)
-          end
-        end
-      end
-
-      context 'when project does exist' do
         let(:harvest_time_reports) do
           [
             {
-              project_id: 1,
+              project_id: 3,
               project_name: 'Project 1',
               client_id: 1,
               billable_hours: 10
@@ -155,8 +118,9 @@ RSpec.describe FetchHarvestTimeReportsJob, type: :job do
           ]
         end
 
-        it 'does not create project' do
-          expect { perform }.not_to(change { Project.count })
+        it 'does not create time reports' do
+          expect { perform }.to raise_error(ActiveRecord::RecordNotFound)
+                            .and change { TimeReport.count }.by(0)
         end
       end
     end

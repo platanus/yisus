@@ -11,27 +11,16 @@ class FetchHarvestTimeReportsJob < ApplicationJob
         customer = Customer.find_by(harvest_id: report[:client_id])
         next unless customer
 
-        project = upsert_project(customer, report[:project_name], report[:project_id])
+        project = Project.find_by!(harvest_id: report[:project_id])
         upsert_time_report(project, date_range[:from], date_range[:to], report[:billable_hours])
       end
     end
-
-    TimeReport.where(date_range)
   end
 
   private
 
   def client
     @client ||= HarvestClient.new
-  end
-
-  def upsert_project(customer, name, harvest_id)
-    project = Project.find_or_initialize_by(harvest_id: harvest_id)
-    project.name = name
-    project.customer = customer
-    project.unit_price = DEFAULT_UNIT_PRICE
-    project.save!
-    project
   end
 
   def upsert_time_report(project, beginning_of_month, end_of_month, billable_hours)
