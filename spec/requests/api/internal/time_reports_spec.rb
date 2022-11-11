@@ -34,13 +34,13 @@ RSpec.describe 'Api::Internal::TimeReportsControllers', type: :request do
     end
 
     before do
-      allow(FetchHarvestTimeReportsJob).to receive(:perform_now)
+      allow(FetchHarvestDataJob).to receive(:perform_now)
       sign_in user
       perform
     end
 
     it 'calls FetchHarvestTimeReportsJob' do
-      expect(FetchHarvestTimeReportsJob).to have_received(:perform_now)
+      expect(FetchHarvestDataJob).to have_received(:perform_now)
     end
   end
 end

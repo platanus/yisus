@@ -4,7 +4,7 @@ class Api::Internal::TimeReportsController < Api::Internal::BaseController
   end
 
   def create
-    respond_with FetchHarvestTimeReportsJob.perform_now(time_reports_date_range)
+    respond_with FetchHarvestDataJob.perform_now(time_reports_date_range)
   end
 
   private
