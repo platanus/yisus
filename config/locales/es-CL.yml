@@ -1,2 +1,49 @@
 es-CL:
-  hello: "Hola mundo"
+  activerecord:
+    attributes:
+      timestamps: &timestamps
+        created_at: Creado
+        updated_at: Actualizado
+      customer:
+        <<: *timestamps
+        id: ID
+        name: Nombre
+        email: Email
+        harvest_id: ID en Harvest
+        bsale_id: ID en Bsale
+      document:
+        bsale_id: ID en Bsale
+        url: URL
+        time_report: Reporte
+      project:
+        <<: *timestamps
+        id: ID
+        name: Nombre
+        harvest_id: ID en Harvest
+        unit_price: Tarifa
+        customer: Cliente
+      time_report:
+        <<: *timestamps
+        from: Desde
+        to: Hasta
+        billable_hours: Horas facturables
+        project: Proyecto
+    models:
+      admin_user:
+        one: Administrador
+        other: Administradores
+      customer:
+        one: Cliente
+        other: Clientes
+      document:
+        one: Documento
+        other: Documentos
+      project:
+        one: Proyecto
+        other: Proyectos
+      time_report:
+        one: Reporte
+        other: Reportes
+
+
+
